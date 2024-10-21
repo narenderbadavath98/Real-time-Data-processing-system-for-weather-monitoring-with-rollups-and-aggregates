@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Monitoring</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Weather Monitor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/real_time_bonus">Liveweather</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#alerts">Alerts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#summary">Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/visualizations">Visualization</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#feedback">Feedback</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5" id="home">
+        <h1 class="text-center text-info font-weight-bold">Weather Monitoring System</h1>
+        <h4 class="text-secondary text-center">Last Update: {{ last_update_time }}</h4>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Current Weather Data</h5>
+                <table class="table table-bordered table-striped mt-3">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>City</th>
+                            <th>Weather</th>
+                            <th>Temperature (°C)</th>
+                            <th>Feels Like (°C)</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in weather_data %}
+                        <tr>
+                            <td>{{ data.city }}</td>
+                            <td>{{ data.weather }}</td>
+                            <td>{{ data.temp }}</td>
+                            <td>{{ data.feels_like }}</td>
+                            <td>{{ data.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5" id="summary">
+        <h2 class="text-center text-secondary">Daily Summary for Delhi</h2>
+        <div class="card mt-3">
+            <div class="card-body">
+                {% if daily_summary %}
+                <p>Average Temperature: <strong>{{ daily_summary.avg_temp }}°C</strong></p>
+                <p>Max Temperature: <strong>{{ daily_summary.max_temp }}°C</strong></p>
+                <p>Min Temperature: <strong>{{ daily_summary.min_temp }}°C</strong></p>
+                <p>Dominant Weather: <strong>{{ daily_summary.dominant_weather }}</strong></p>
+                {% else %}
+                <p>No summary data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5" id="alerts">
+        <h2 class="text-center text-secondary">Set Temperature Alert</h2>
+        <div class="card mt-3">
+            <div class="card-body">
+                <form action="/alert_registered" method="post" class="mb-4">
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="text" class="form-control" name="city" placeholder="City" required>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="threshold_temp" placeholder="Threshold Temperature" required>
+                        </div>
+                        <div class="col">
+                            <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-success">Check Alert</button>
+                        </div>
+                    </div>
+                </form>
+
+                {% if alert_triggered %}
+                <p class="alert alert-danger">Alert: Temperature exceeded {{ threshold_temp }}°C in {{ city }}!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5" id="feedback">
+        <h2 class="text-center text-secondary">Feedback Form</h2>
+        <div class="card mt-3">
+            <div class="card-body">
+                <form action="/submit_feedback" method="post">
+                    <div class="form-group">
+                        <label for="feedbackName">Name:</label>
+                        <input type="text" class="form-control" id="feedbackName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackEmail">Email:</label>
+                        <input type="email" class="form-control" id="feedbackEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackMessage">Message:</label>
+                        <textarea class="form-control" id="feedbackMessage" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center mt-5 py-4" style="background-color: #f8f9fa;">
+        <p class="text-muted">&copy; 2024 Weather Monitor. All rights reserved.</p>
+    </footer>
+</body>
+</html>

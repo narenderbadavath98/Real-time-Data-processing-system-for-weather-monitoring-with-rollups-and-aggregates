@@ -1,0 +1,32 @@
+body {
+    font-family: 'Arial', sans-serif; /* Clean, modern font */
+    background-color: #f0f2f5; /* Light background color */
+}
+
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    border-radius: 10px; /* Rounded corners for cards */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card-body {
+    padding: 20px; /* More padding for a spacious look */
+}
+
+.btn {
+    border-radius: 5px; /* Rounded button edges */
+}
+
+.alert {
+    margin-top: 20px; /* Space between alert and form */
+}
+
+footer {
+    background-color: #e9ecef; /* Light footer background */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
